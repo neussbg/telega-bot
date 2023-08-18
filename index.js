@@ -1,7 +1,7 @@
 
 const TelegramApi = require('node-telegram-bot-api')
 
-const token = '6195145742:AAGGoBeUgpL2fduG80SOIJeLgik7j1p0d3w';
+const token = '6680902350:AAGIL56iRwjKCA9eLzIqcdiMGp9n1GOYePI';
 
 const agrement = 0.43;
 
