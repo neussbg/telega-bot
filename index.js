@@ -119,12 +119,12 @@ async function setMenuClothesBtns(chatId, bot, msg){
         [
             {
                 text: '♻️Меню',
-                callback_data: 'menus'
+                callback_data: '/menus'
             },
 
             {
                 text: '💴 Рассчитать стоимость',
-                callback_data: 'prices'
+                callback_data: '/prices'
             }, 
         ]
         ],
@@ -185,8 +185,8 @@ ${currentProfile}
 Получить ответы на все свои вопросы 🤔`
 }
 
-function setMenuMessage(msg){
-return `${msg.from.first_name} , Тут вы можете выбрать другой раздел меню`
+function setMenuMessage(msg, isCustom = false){
+return `${isCustom ? msg.message?.chat?.first_name : msg.from.first_name} , Тут вы можете выбрать другой раздел меню`
 }
 
 function setPriceText(curs){
@@ -332,12 +332,22 @@ Poizon, мы предоставляем открытую информацию п
             if(isWaitForMessage && isNotNumber){
                 return bot.sendMessage(chatId, `❌Вводите только цифры` )
             }
-               
-             callbackQuery(chatId, bot, msg)
 
     })
 }
 
+bot.on('callback_query',  async (query) => {
+    const chatId =query.message?.chat?.id
+    await bot.answerCallbackQuery(query.id)
+    if(query.data === '/menus' ){
+      return  setMenuBtns(bot, chatId, setMenuMessage(query, true))
+    }
+
+    if(query.data === '/prices'){
+       await bot.sendMediaGroup(chatId,[ {type: 'photo', media: 'imgs/photo1.jpg'}, {type: 'photo', media: 'imgs/photo2.jpg'}]);
+        return setMenuClothesBtns(chatId, bot, 'Выберите категорию товара')
+    }
+});
 
 
 startBot()
